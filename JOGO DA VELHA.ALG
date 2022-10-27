@@ -3,8 +3,7 @@ Algoritmo "Jogo da Velha"
 // Professor   : Antonio Carlos Nicolodi 
 Var
 
-p1, p2, p3, p4, p5, p6, p7, p8, p9, resposta, proximaJogada, querJogar: caractere
-i : inteiro
+p1, p2, p3, p4, p5, p6, p7, p8, p9, jogada, proximaJogada, querJogar: caractere
 casaOcupada, xVenceu, oVenceu : logico
 
 Procedimento reset ()
@@ -46,8 +45,8 @@ FimProcedimento
 Procedimento jogar()
 Inicio
    Escreval
-   Escreva ("Digite o número da casa para jogar, ou 'R' para reiniciar: ")
-   Leia (resposta)
+   Escreva ("Digite o número da casa para jogar, ou 'R' para Reiniciar: ")
+   Leia (jogada)
    trataErro ()
    testeCasaOcupada ()
    trataCasaOcupada ()
@@ -58,17 +57,17 @@ FimProcedimento
 
 Procedimento trataErro ()
 Inicio
-   Enquanto (resposta <> "1") e (resposta <> "2") e (resposta <> "3") e (resposta <> "4") e (resposta <> "5") e (resposta <> "6") e (resposta <> "7") e (resposta <> "8") e (resposta <> "9") e (resposta <> "R") faca
+   Enquanto (jogada <> "1") e (jogada <> "2") e (jogada <> "3") e (jogada <> "4") e (jogada <> "5") e (jogada <> "6") e (jogada <> "7") e (jogada <> "8") e (jogada <> "9") e (jogada <> "R") faca
    faca
       Escreval ("Perdão, não compreendi.")
       Escreva ("Digite o número da casa para jogar, ou 'R' para reiniciar: ")
-      Leia (resposta)
+      Leia (jogada)
    FimEnquanto
 FimProcedimento
 
 Procedimento decisao ()
 Inicio
-   Escolha resposta
+   Escolha jogada
       caso "1"
          p1 := proximaJogada
          mudaJogador ()
@@ -135,7 +134,7 @@ FimProcedimento
 
 Procedimento testeCasaOcupada ()
 Inicio
-   Se (resposta = "1") e (p1 <> "1") ou (resposta = "2") e (p2 <> "2") ou (resposta = "3") e (p3 <> "3") ou (resposta = "4") e (p4 <> "4") ou (resposta = "5") e (p5 <> "5") ou (resposta = "6") e (p6 <> "6") ou (resposta = "7") e (p7 <> "7") ou (resposta = "8") e (p8 <> "8") ou (resposta = "9") e (p9 <> "9") entao
+   Se (jogada = "1") e (p1 <> "1") ou (jogada = "2") e (p2 <> "2") ou (jogada = "3") e (p3 <> "3") ou (jogada = "4") e (p4 <> "4") ou (jogada = "5") e (p5 <> "5") ou (jogada = "6") e (p6 <> "6") ou (jogada = "7") e (p7 <> "7") ou (jogada = "8") e (p8 <> "8") ou (jogada = "9") e (p9 <> "9") entao
       casaOcupada := VERDADEIRO
       Senao
          casaOcupada := FALSO
@@ -146,8 +145,9 @@ Procedimento trataCasaOcupada ()
 Inicio
     Enquanto ( casaOcupada = VERDADEIRO ) faca
       Escreval
-      Escreval ("Casa Ocupada. Escolha aluma casa sem 'X' nem 'O': ")
-      Leia (resposta)
+      Escreval ("Casa Ocupada. Escolha alguma casa sem 'X' nem 'O',")
+      Escreva ("ou 'R' para Reiniciar: ")
+      Leia (jogada)
       trataErro ()
       testeCasaOcupada()
    FimEnquanto
@@ -334,29 +334,28 @@ Inicio
    FimEnquanto
 FimProcedimento
 
+Procedimento telaInicio ()
 Inicio
+   Escreval
+   Escreval ("   *************************")
+   Escreval ("   *                       *")
+   Escreval ("   *    JOGO DA VELHA !    *")
+   Escreval ("   *                       *")
+   Escreval ("   *************************")
+   Escreval
+   Escreva ("Vamos jogar? [S/N]: ")
+   Leia (querJogar)
+FimProcedimento
 
-
-Escreval
-Escreval ("   *************************")
-Escreval ("   *                       *")
-Escreval ("   *    JOGO DA VELHA !    *")
-Escreval ("   *                       *")
-Escreval ("   *************************")
-Escreval
-Escreva ("Vamos jogar? [S/N]: ")
-Leia (querJogar)
-
-trataSimOuNao()
-
-Enquanto (querJogar = "S") faca
-   reset()
-   mostraJogo()
-
+Procedimento jogando()
+Inicio
    Enquanto (p1 = "1") ou (p2 = "2") ou (p3 = "3") ou (p4 = "4") ou (p5 = "5") ou (p6 = "6") ou (p7 = "7") ou (p8 = "8") ou (p9 = "9") faca
-     jogar ()
+      jogar ()
    FimEnquanto
-   
+FimProcedimento
+
+Procedimento exibeVencedor()
+Inicio
    Se (xVenceu = VERDADEIRO ) entao
       Escreval
       Escreval ("         X VENCEU!")
@@ -369,13 +368,27 @@ Enquanto (querJogar = "S") faca
          Escreval ("        DEU VELHA!")
       FimSe
    FimSe
+FimProcedimento
 
+Procedimento segueJogo()
+Inicio
    Escreval
    Escreva ("  Jogar outra partida? [S/N]: ")
    Leia (querJogar)
    trataSimOuNao()
-FimEnquanto)
+FimProcedimento
 
-fimJogo ()
+Inicio
+
+   telaInicio()
+   trataSimOuNao()
+   Enquanto (querJogar = "S") faca
+      reset()
+      mostraJogo()
+      jogando()
+      exibeVencedor()
+      segueJogo()
+   FimEnquanto
+   fimJogo ()
 
 Fimalgoritmo
